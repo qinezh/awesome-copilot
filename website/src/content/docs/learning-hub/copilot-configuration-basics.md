@@ -3,8 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-13
-estimatedReadingTime: '10 minutes'
+lastUpdated: 2026-07-21
 tags:
   - configuration
   - setup
@@ -470,6 +469,15 @@ The settings dialog supports search — type to filter settings by name. Changes
 
 These flags mirror the **Repo** and **Repo (local)** scope tabs available in the `/settings` dashboard (v1.0.71+), making it easier to manage per-repository vs. user-global configuration without ambiguity. In v1.0.71+, the `/settings` dashboard also shows **Repo** and **Repo (local)** tabs alongside the existing user-level view, giving you a unified place to see which settings are applied at each layer.
 
+*(v1.0.72+)* Use `/model --session` (or `-s`) to change the model, reasoning effort, or context window for just the current session, without touching your global or repository settings:
+
+```
+/model --session claude-opus-4   # switch model for this session only
+/model -s                        # open the picker scoped to the current session
+```
+
+This is useful when you want to temporarily use a more powerful model for a complex task without changing your default.
+
 GitHub Copilot CLI has two commands for managing session state, with distinct behaviours:
 
 | Command | Behaviour |
@@ -541,11 +549,19 @@ The `/cd` command changes the working directory for the current session. Since v
 
 This is useful when you have multiple backgrounded sessions each focused on a different project directory.
 
-The `/worktree` command (v1.0.61+, also aliased `/move`) creates a new git worktree and switches into it, moving any uncommitted changes along. This lets you start working on a parallel branch without leaving your current terminal session:
+The `/worktree` command (v1.0.61+) creates a new git worktree and switches into it, **leaving your uncommitted changes behind** in the current worktree. This lets you spin up a parallel branch while keeping your work-in-progress intact:
 
 ```
 /worktree my-feature-branch
 ```
+
+The companion `/move` command does the opposite: it creates a new worktree and **carries your uncommitted changes into it**, so you can continue the work you've already started on a fresh branch:
+
+```
+/move my-feature-branch
+```
+
+> **Note**: Before v1.0.71, `/move` was simply an alias for `/worktree`. In v1.0.71+, they have distinct behaviours: use `/worktree` to fork a clean branch and `/move` to relocate in-progress work.
 
 In v1.0.66+, you can pass a task description to `/worktree` to name the branch from the task and immediately run the task as the first prompt in the new worktree — all in one step:
 
@@ -743,6 +759,8 @@ copilot --plan          # start in plan mode (propose without executing)
 ```
 
 This is useful in scripts or CI pipelines where you want the CLI to immediately begin working in a specific mode without an interactive prompt.
+
+> **Plan mode safety (v1.0.71+)**: Plan mode now **hard-blocks** built-in tool calls that would modify the workspace — the agent cannot edit files or run mutating shell commands while planning. Built-in mutators like opening a pull request are blocked; MCP and external tools are still allowed. This makes plan mode a safe environment for reviewing and approving a proposed approach before any changes are made.
 
 The `--max-autopilot-continues` flag controls how many times Copilot can automatically continue in autopilot mode before pausing for confirmation. The default is 5:
 
