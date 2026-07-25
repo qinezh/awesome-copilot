@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-09
+lastUpdated: 2026-07-25
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -254,13 +254,33 @@ The agent can then query your database, analyze query plans, and suggest optimiz
 
 | Scenario | Recommended Model |
 |----------|-------------------|
-| Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)* |
+| Most demanding reasoning, deep analysis | Claude Opus 5 *(v1.0.75+)* |
+| Demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)* |
 | Complex reasoning, analysis | Claude Sonnet 4 |
 | Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)* |
 | Code generation, refactoring | GPT-4.1 |
 | Code-specialized tasks, large context | kimi-k2.7-code *(v1.0.68+)* |
-| Quick analysis, simple tasks | Claude Haiku or GPT-4.1-mini |
+| Quick analysis, simple tasks | Claude Haiku, GPT-4.1-mini, or gemini-3.6-flash *(v1.0.74+)* |
 | Large codebase understanding | Models with larger context windows |
+
+### Overriding the Model at Runtime
+
+While the `model` field in frontmatter sets the default for an agent, you can also adjust models on the fly in a Copilot CLI session without changing the agent file:
+
+- **Session-only override** *(v1.0.72+)*: Use `/model --session` (or `/model -s`) to change the model, reasoning effort, or context window for just the current session. The setting reverts to the agent's default when you start a new session:
+
+  ```
+  /model --session claude-opus-5
+  ```
+
+- **Plan mode model** *(v1.0.74+)*: Use `/model plan` (or `/model --plan`) to pick a dedicated model for use while in plan mode. Pass a model ID to set it, `off` to clear it, or no argument to open the picker. Copilot automatically reverts to the session model when you leave plan mode:
+
+  ```
+  /model plan claude-opus-5
+  /model plan off
+  ```
+
+These runtime overrides are useful for experimenting with different models without permanently changing your agent files, or for temporarily switching to a more capable model for a demanding task.
 
 ### Organizing Agents in Your Repository
 
