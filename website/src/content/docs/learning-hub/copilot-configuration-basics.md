@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-13
+lastUpdated: 2026-07-26
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -448,6 +448,18 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
 **Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string.
+
+**Plan mode model** *(v1.0.74+)*: You can pick a separate model that is used only while in plan mode. Use `/model plan` (or `/model --plan`) to open the model picker scoped to plan mode; pass a model ID directly, `off` to clear the plan-mode override, or no argument to open the interactive picker. When you leave plan mode, the CLI automatically reverts to your regular session model.
+
+```
+/model plan                   # open picker for the plan-mode model
+/model plan claude-opus-5     # set Claude Opus 5 for plan mode
+/model plan off               # clear the plan-mode model override
+```
+
+This is useful when you want a high-reasoning model (e.g., Claude Opus 5) for planning steps but a faster, cheaper model for the actual implementation work.
+
+**Recently added models**: Claude Opus 5 (v1.0.75) and Gemini 3.6 Flash (v1.0.74) are now available as selectable models in the picker.
 
 ### CLI Session Commands
 
