@@ -3,7 +3,7 @@ title: 'Working with Canvas Extensions'
 description: 'Create and iterate on GitHub Copilot app canvases using /create-canvas, then shape them into reusable project or personal extensions.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-06-17
+lastUpdated: 2026-07-27
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -119,6 +119,7 @@ Use these extension folders as concrete references:
 - [`Release Notes Showcase`](../../extensions/#release-notes-showcase): release notes authoring and review canvas pattern.
 - [`Chromium Control Canvas`](../../extensions/#chromium-control-canvas): advanced canvas that coordinates panel controls with a real headful Chromium window.
 - [`Agent Arcade`](../../extensions/#agent-arcade-canvas): retro arcade canvas with agent-callable controls for choosing or restarting mini-games while agents work.
+- [`MCP Connectors`](../../extensions/#mcp-connectors): canvas for browsing and connecting to hosted MCP servers from Azure Connector Namespace — shows how a canvas can manage external tool configuration, not just workflow state.
 
 These examples show different complexity levels, from focused workflow boards to richer UI + automation integrations.
 

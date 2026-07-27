@@ -3,7 +3,7 @@ title: 'Understanding MCP Servers'
 description: 'Learn how Model Context Protocol servers extend GitHub Copilot with access to external tools, databases, and APIs.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-13
+lastUpdated: 2026-07-27
 estimatedReadingTime: '8 minutes'
 tags:
   - mcp
@@ -273,6 +273,30 @@ The MCP ecosystem is growing rapidly. Here are key resources:
 - **[Official MCP Servers](https://github.com/modelcontextprotocol/servers)**: Reference implementations for common services (PostgreSQL, Slack, Google Drive, etc.)
 - **[MCP Specification](https://spec.modelcontextprotocol.io/)**: The protocol specification for building your own servers
 - **[Awesome MCP Servers](https://github.com/punkpeye/awesome-mcp-servers)**: Community-curated list of MCP servers
+
+### Discovering Hosted MCP Servers with Azure Connector Namespaces
+
+[Azure Connector Namespace](https://learn.microsoft.com/en-us/azure/connector-namespace/connector-namespace-overview) is an Azure preview service that hosts managed MCP servers for Microsoft and partner services. Instead of running an MCP server locally, you connect to a server that Azure manages — no local process to maintain, and authentication is handled centrally via Microsoft Entra ID.
+
+This is a meaningful shift from the local-server model: your team can share a single hosted MCP configuration rather than each developer running their own local server.
+
+The **[MCP Connectors canvas extension](../../extensions/#mcp-connectors)** for the GitHub Copilot app makes it easy to set this up without editing config files:
+
+1. Install the **MCP Connectors** extension from the Copilot app Settings → Plugins (search for `connector-namespaces`)
+2. Open the canvas and sign in to Azure via Microsoft Entra ID
+3. Choose an Azure subscription and Connector Namespace
+4. Browse the catalog of available Microsoft and partner MCP servers
+5. Click **Connect** on a server and complete its consent flow
+6. Restart the Copilot app — the connected server's tools are now available to agents
+
+Once connected, the hosted server behaves like any other remote MCP server. The canvas also provides a **Sandbox** mode for inspecting a connected server in the Connector Namespace playground without committing to a full agent session.
+
+**Requirements**:
+- An Azure subscription with an existing Connector Namespace (or follow the [creation guide](https://learn.microsoft.com/en-us/azure/connector-namespace/create-connector-namespace))
+- Permission to view the namespace and create connections
+- A browser for Microsoft Entra sign-in (the canvas retains authentication across app restarts using secure OS credential storage)
+
+> **Note**: Azure Connector Namespace is currently a preview service; regional availability may vary.
 
 ### Building Your Own MCP Server
 
